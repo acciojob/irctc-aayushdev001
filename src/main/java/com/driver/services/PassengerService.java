@@ -16,6 +16,7 @@ public class PassengerService {
     {
         //Add the passenger Object in the passengerDb and return the passegnerId that has been returned
         Passenger passenger1 = new Passenger();
+        passenger1.setPassengerId(passenger.getPassengerId());
         passenger1.setAge(passenger.getAge());
         passenger1.setName(passenger.getName());
         passengerRepository.save(passenger1);

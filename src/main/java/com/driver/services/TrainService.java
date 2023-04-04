@@ -72,7 +72,7 @@ public class TrainService {
             List<Ticket> list = train.getBookedTickets();
             for (Ticket ticket : list)
             {
-                if(ticket.getFromStation().equals(station.toString()) || ticket.getTrain().getRoute().contains(station.toString()))
+                if(ticket.getFromStation().toString().equals(station.toString()) || ticket.getTrain().getRoute().contains(station.toString()))
                 {
                     count += ticket.getPassengersList().size();
                 }
