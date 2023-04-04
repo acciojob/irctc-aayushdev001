@@ -118,7 +118,7 @@ public class TrainService {
         List<Integer> ans = new ArrayList<>();
         for(Train train : list)
         {
-            if(train.getRoute().contains(station.toString()) && startTime.compareTo(train.getDepartureTime())<0 && endTime.compareTo(train.getDepartureTime())>0)
+            if(train.getRoute().contains(station.toString()) && startTime.compareTo(train.getDepartureTime())>0 && endTime.compareTo(train.getDepartureTime())<0)
                 ans.add(train.getTrainId());
         }
         return ans;
