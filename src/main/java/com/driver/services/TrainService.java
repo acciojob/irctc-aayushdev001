@@ -39,9 +39,9 @@ public class TrainService {
         train.setDepartureTime(trainEntryDto.getDepartureTime());
         train.setNoOfSeats(trainEntryDto.getNoOfSeats());
 
-        trainRepository.save(train);
+        return trainRepository.save(train).getTrainId();
 
-        return train.getTrainId();
+//        return train.getTrainId();
     }
 
     public Integer calculateAvailableSeats(SeatAvailabilityEntryDto seatAvailabilityEntryDto){
