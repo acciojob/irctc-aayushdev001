@@ -5,13 +5,21 @@ import com.driver.model.Station;
 import java.time.LocalTime;
 import java.util.List;
 
-public class AddTrainEntryDto {
+public class AddTrainEntryDto
+{
 
     private List<Station> stationRoute; //The items in the list denote the  order in which the train will move
 
     private LocalTime departureTime;
 
     private int noOfSeats;
+
+
+
+
+
+
+
 
     public List<Station> getStationRoute() {
         return stationRoute;

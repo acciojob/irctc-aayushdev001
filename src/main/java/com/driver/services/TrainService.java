@@ -26,7 +26,22 @@ public class TrainService {
         //and route String logic to be taken from the Problem statement.
         //Save the train and return the trainId that is generated from the database.
         //Avoid using the lombok library
-        return null;
+        Train train = new Train();
+
+        String route = "";
+        for (Station station : trainEntryDto.getStationRoute())
+        {
+            route = route + station + '.';
+        }
+        route = route.substring(0, route.length() - 1);
+
+        train.setRoute(route);
+        train.setDepartureTime(trainEntryDto.getDepartureTime());
+        train.setNoOfSeats(trainEntryDto.getNoOfSeats());
+
+        trainRepository.save(train);
+
+        return train.getTrainId();
     }
 
     public Integer calculateAvailableSeats(SeatAvailabilityEntryDto seatAvailabilityEntryDto){
@@ -35,7 +50,8 @@ public class TrainService {
         //Suppose the route is A B C D
         //And there are 2 seats avaialble in total in the train
         //and 2 tickets are booked from A to C and B to D.
-        //The seat is available only between A to C and A to B. If a seat is empty between 2 station it will be counted to our final ans
+        //The seat is available only between A to C and A to B. If a seat is empty between 2 station it will be counted
+        // to our final ans
         //even if that seat is booked post the destStation or before the boardingStation
         //Inshort : a train has totalNo of seats and there are tickets from and to different locations
         //We need to find out the available seats between the given 2 stations.
@@ -49,7 +65,24 @@ public class TrainService {
         //if the trainId is not passing through that station
         //throw new Exception("Train is not passing from this station");
         //  in a happy case we need to find out the number of such people.
-
+        Train train = trainRepository.findById(trainId).get();
+        if(train.getRoute().contains(station.toString()))
+        {
+            int count = 0;
+            List<Ticket> list = train.getBookedTickets();
+            for (Ticket ticket : list)
+            {
+                if(ticket.getFromStation().equals(station.toString()) || ticket.getTrain().getRoute().contains(station.toString()))
+                {
+                    count += ticket.getPassengersList().size();
+                }
+                return count;
+            }
+        }
+        else
+        {
+            throw new Exception("Train is not passing from this station");
+        }
 
         return 0;
     }
@@ -60,7 +93,18 @@ public class TrainService {
         //We need to find out the age of the oldest person that is travelling the train
         //If there are no people travelling in that train you can return 0
 
-        return 0;
+        Train train = trainRepository.findById(trainId).get();
+        List<Ticket> list = train.getBookedTickets();
+        int maxAge = 0;
+
+        for(Ticket ticket : list)
+        {
+            for(Passenger passenger : ticket.getPassengersList())
+            {
+                if(passenger.getAge() > maxAge) maxAge = passenger.getAge();
+            }
+        }
+        return maxAge;
     }
 
     public List<Integer> trainsBetweenAGivenTime(Station station, LocalTime startTime, LocalTime endTime){
@@ -70,8 +114,14 @@ public class TrainService {
         //You can assume that the date change doesn't need to be done ie the travel will certainly happen with the same date (More details
         //in problem statement)
         //You can also assume the seconds and milli seconds value will be 0 in a LocalTime format.
-
-        return null;
+        List<Train> list = trainRepository.findAll();
+        List<Integer> ans = new ArrayList<>();
+        for(Train train : list)
+        {
+            if(train.getRoute().contains(station.toString()) && startTime.compareTo(train.getDepartureTime())<=0 && endTime.compareTo(train.getDepartureTime())>=0)
+                ans.add(train.getTrainId());
+        }
+        return ans;
     }
 
 }
