@@ -19,7 +19,7 @@ public class PassengerService {
         passenger1.setAge(passenger.getAge());
         passenger1.setName(passenger.getName());
         passengerRepository.save(passenger1);
-        return passenger1.getPassengerId();
+        return passenger.getPassengerId();
     }
 
 }
